@@ -84,9 +84,14 @@ public class UpdateContactAction extends ActionSupport {
 			if(serialNumber != null && !serialNumber.equals("")){
 				access.updateRecord(entryVo);
 			} else {
-				access.addRecord(entryVo);
+				if(null != access.getRecordByEmail(email, cellPhone)){
+					addActionError("Record already Exist retrieve that record first");
+				} else {
+				  access.addRecord(entryVo);
+				  addActionError("Updated Successfully");
+				}
 			}
-			addActionError("Updated Successfully");
+			
 		} catch (Exception e) {
 			addActionError("Update Failed. Try Again");
 			e.printStackTrace();

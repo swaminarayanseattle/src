@@ -94,7 +94,18 @@ Logger log = Logger.getLogger(DataAccessService.class);
 			
 			con = getConnection();
 			pst = con.prepareStatement(query.toString());
-			pst.setString(1, searchID);
+			
+			if(null != email && !"".equals(email)){
+				pst.setString(1, email);
+			}
+			if(null != phone && !"".equals(phone)){
+				if(flag)
+					pst.setString(2, phone);
+				else
+					pst.setString(1, phone);
+			}
+			
+			
 			ResultSet rs = pst.executeQuery();
 			List<ContactEntryVO> result =	mapResult(rs,con);
 			return result.get(0);
